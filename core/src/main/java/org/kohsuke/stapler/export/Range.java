@@ -12,6 +12,9 @@ import java.util.List;
  * @author Kohsuke Kawaguchi
  */
 public class Range {
+    // RunList implements List, but size() iterates over every build.
+    private static final String JENKINS_RUN_LIST_CLASS = "hudson.util.RunList";
+
     public final int min;
     public final int max;
 
@@ -42,7 +45,7 @@ public class Range {
     }
 
     public <T> Iterable<T> apply(final Iterable<T> s) {
-        if (s instanceof List) {
+        if (s instanceof List && !s.getClass().getName().equals(JENKINS_RUN_LIST_CLASS)) {
             return apply((List<T>) s);
         } else {
             return new Iterable<>() {

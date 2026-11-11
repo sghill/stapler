@@ -56,4 +56,12 @@ class RangeTest {
         assertThat(r.apply(list), empty());
         assertThat(r.apply(set), emptyIterable());
     }
+
+    @Test
+    void jenkinsRunListUsesIteratorInsteadOfSize() {
+        Iterable<String> runList = new hudson.util.RunList();
+        Range r = new Range(1, 3);
+
+        assertThat(r.apply(runList), contains("b", "c"));
+    }
 }
